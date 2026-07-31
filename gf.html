@@ -1,748 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="no-referrer">
-    <title>For The Girl I Adore</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --lavender: #e6e0f5;
-            --soft-purple: #c4b5e0;
-            --deep-purple: #8b7ec7;
-            --pink: #f5d0d9;
-            --deep-pink: #e8a4b8;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background-color: var(--lavender);
-            color: #4a4a6a;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle, #d4c8e8 1.5px, transparent 1.5px);
-            background-size: 24px 24px;
-            opacity: 0.6;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .font-script { font-family: 'Dancing Script', cursive; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-
-        .envelope-container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .envelope-container.hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.9);
-        }
-
-        .message-button {
-            width: 280px;
-            min-height: 180px;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .message-card {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ffdbe3 0%, #ffb6c1 100%);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(139, 126, 199, 0.2);
-            position: relative;
-            overflow: hidden;
-            padding: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .message-button:hover .message-card {
-            transform: translateY(-4px);
-        }
-
-        .message-card::before {
-            content: '';
-            position: absolute;
-            inset: 14px;
-            border: 2px dashed rgba(255,255,255,0.55);
-            border-radius: 16px;
-        }
-
-        .message-card::after {
-            content: '♡';
-            position: absolute;
-            top: 12px;
-            right: 14px;
-            font-size: 18px;
-            color: rgba(255,255,255,0.85);
-        }
-
-        .letter-card {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 260px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 16px;
-            padding: 28px 20px;
-            text-align: center;
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 3;
-            box-shadow: 0 8px 32px rgba(139, 126, 199, 0.15);
-        }
-
-        .message-open .letter-card {
-            opacity: 1;
-            transform: translate(-50%, -180px);
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(3deg); }
-        }
-
-        @keyframes float-slow {
-            0%, 100% { transform: translateY(0px) translateX(0px); }
-            33% { transform: translateY(-8px) translateX(5px); }
-            66% { transform: translateY(-4px) translateX(-5px); }
-        }
-
-        .float-anim { animation: float 3s ease-in-out infinite; }
-        .float-anim-delay { animation: float 3.5s ease-in-out 0.5s infinite; }
-        .float-anim-slow { animation: float-slow 4s ease-in-out infinite; }
-
-        .main-content {
-            display: none;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-
-        .main-content.visible {
-            display: block;
-            opacity: 1;
-        }
-
-        .section {
-            min-height: 100vh;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px rgba(139, 126, 199, 0.12);
-        }
-
-        .music-player {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e6e0f5;
-            border-radius: 3px;
-            overflow: hidden;
-            margin-top: 6px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 45%;
-            background: linear-gradient(90deg, #b8a9e0, #8b7ec7);
-            border-radius: 3px;
-            animation: progress 20s linear infinite;
-        }
-
-        @keyframes progress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        .polaroid-slider {
-            position: relative;
-            width: 100%;
-            max-width: 320px;
-            height: 420px;
-        }
-
-        .polaroid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            border-radius: 16px;
-            padding: 16px 16px 60px 16px;
-            box-shadow: 0 8px 24px rgba(139, 126, 199, 0.15);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            transform: translateX(50px) scale(0.9);
-            pointer-events: none;
-        }
-
-        .polaroid.active {
-            opacity: 1;
-            transform: translateX(0) scale(1);
-            pointer-events: all;
-            z-index: 10;
-        }
-
-        .polaroid.prev {
-            opacity: 0.4;
-            transform: translateX(-30px) scale(0.85) rotate(-3deg);
-            z-index: 5;
-        }
-
-        .tape {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 28px;
-            background: repeating-linear-gradient(45deg, #e6e0f5, #e6e0f5 8px, #d4c8e8 8px, #d4c8e8 16px);
-            opacity: 0.6;
-            border-radius: 4px;
-        }
-
-        .bouquet-card {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            padding: 24px 16px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-        }
-
-        .bouquet-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(139, 126, 199, 0.15);
-        }
-
-        .scalloped-bottom {
-            position: relative;
-        }
-
-        .scalloped-bottom::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            background: radial-gradient(circle at 10px 0, transparent 10px, #e6e0f5 11px);
-            background-size: 20px 20px;
-            background-position: 0 0;
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--lavender); }
-        ::-webkit-scrollbar-thumb { background: var(--soft-purple); border-radius: 4px; }
-
-        .corner-flower {
-            position: absolute;
-            font-size: 48px;
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #b8a9e0 0%, #9b8ec9 100%);
-            color: white;
-            padding: 14px 32px;
-            border-radius: 50px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            box-shadow: 0 6px 20px rgba(139, 126, 199, 0.3);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(139, 126, 199, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .letter-divider {
-            border: none;
-            border-top: 2px dashed #d4c8e8;
-            margin: 20px 0;
-            position: relative;
-        }
-
-        .letter-divider::before,
-        .letter-divider::after {
-            content: '✿';
-            position: absolute;
-            top: -12px;
-            color: #b8a9e0;
-            font-size: 16px;
-        }
-
-        .letter-divider::before { left: 0; }
-        .letter-divider::after { right: 0; }
-
-        .sticker-img {
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-        }
-
-        .sticker-img:hover {
-            transform: rotate(-2deg) scale(1.05);
-        }
-
-        @media (max-width: 640px) {
-            .section { padding: 30px 16px; }
-            .polaroid-slider { height: 380px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Girlfriend's Day</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+<div class="app" id="app">
 
-    <div class="envelope-container" id="envelopeScreen">
-        <div class="absolute top-8 w-full text-center">
-            <div class="inline-block bg-white/60 backdrop-blur-sm px-6 py-2 rounded-full border border-white/50 shadow-sm">
-                <span class="text-pink-500 text-lg mr-2">♥</span>
-                <span class="text-xs font-bold tracking-[0.2em] text-purple-400 uppercase">For The Girl I Adore</span>
-            </div>
+  <!-- decorative sparkles -->
+  <div class="sparkle" style="top:6%; left:12%;">✦</div>
+  <div class="sparkle" style="top:14%; right:8%;">✦</div>
+  <div class="sparkle" style="top:40%; left:4%;">✧</div>
+
+  <!-- ================= SCREEN 0: ENVELOPE ================= -->
+  <section id="envelope-screen">
+    <div class="tag">💗 &nbsp;FOR THE GIRL I ADORE</div>
+    <div class="env-wrap">
+      <div class="env-flap"></div>
+      <div class="env-letter">
+        <span class="heart-icon">♥ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ♥</span><br>
+        <h2>happy girlfriend's day, my love</h2>
+        <div style="font-size:20px;color:var(--line);margin:6px 0;">♡</div>
+        <p class="script" style="font-size:20px;color:var(--violet-dark);margin:10px 0 4px;">a little world, made for you</p>
+        <p class="script" style="font-size:14px;color:#9c8bbd;">yours, always</p>
+      </div>
+      <div class="env-body">
+        <div class="env-heart"><span id="initial-letter">L</span></div>
+      </div>
+    </div>
+    <div class="tap-hint">TAP TO OPEN ♡</div>
+  </section>
+
+  <!-- ================= SCREEN 1: HERO ================= -->
+  <section id="hero-screen" class="hidden fade-in">
+    <div class="card center">
+      <div class="eyebrow">💗 FOR MY FAVOURITE PERSON</div>
+      <label class="avatar upload-slot">
+        <input type="file" accept="image/*" onchange="handleUpload(event,'avatar-content')">
+        <span class="slot-content" id="avatar-content">🌸</span>
+      </label>
+      <h1 class="hero-title">Happy Girlfriend's Day</h1>
+      <div class="sub-script">for you, always ♡</div>
+      <p class="body-text">Today is all about you. I built this tiny corner of the internet to say what I don't say often enough — that you make ordinary days feel like the good kind of story. Stay a while, my love.</p>
+
+      <div class="player">
+        <div class="art">🎵</div>
+        <div class="meta">
+          <div class="t">Our Song</div>
+          <div class="s">A TRACK THAT'S JUST US</div>
+          <div class="bar"><i></i></div>
         </div>
+        <button aria-label="play">▶</button>
+      </div>
 
-        <button class="message-button float-anim" id="messageButton" onclick="openMessage()">
-            <div class="message-card">
-                <div>
-                    <div class="text-3xl mb-2">💌</div>
-                    <div class="font-serif text-2xl text-gray-700 mb-2">tap to open</div>
-                    <div class="font-script text-lg text-purple-500">a tiny world made for you</div>
-                </div>
-            </div>
-            <div class="letter-card">
-                <div class="text-2xl font-serif text-gray-700 mb-2">happy girlfriend's day, my love</div>
-                <div class="text-lg font-script text-purple-400 mb-1">a little world, made for you</div>
-                <div class="text-sm font-script text-purple-300">yours, always</div>
-                <div class="flex justify-center gap-2 mt-3">
-                    <span class="text-pink-300 text-lg">♥</span>
-                </div>
-            </div>
-        </button>
+      <div class="thumbs">
+        <label class="upload-slot">
+          <input type="file" accept="image/*" onchange="handleUpload(event,'thumb0')">
+          <span class="slot-content" id="thumb0">🐻</span>
+        </label>
+        <label class="upload-slot">
+          <input type="file" accept="image/*" onchange="handleUpload(event,'thumb1')">
+          <span class="slot-content" id="thumb1">🐰</span>
+        </label>
+        <label class="upload-slot">
+          <input type="file" accept="image/*" onchange="handleUpload(event,'thumb2')">
+          <span class="slot-content" id="thumb2">💐</span>
+        </label>
+      </div>
 
-        <div class="absolute bottom-12 text-center">
-            <p class="text-purple-300 text-sm tracking-widest uppercase mb-4">Tap to Open ♡</p>
-            <div class="w-16 h-16 bg-white/50 rounded-2xl flex items-center justify-center float-anim-delay mx-auto backdrop-blur-sm border border-white/40">
-                <img src="https://api.iconify.design/noto:folded-hands.svg" class="w-10 h-10" alt="cute">
-            </div>
+      <button class="btn" onclick="showScreen('moments-screen')">SEE OUR LITTLE ALBUM →</button>
+    </div>
+  </section>
+
+  <!-- ================= SCREEN 2: MOMENTS CAROUSEL ================= -->
+  <section id="moments-screen" class="hidden fade-in">
+    <div class="card center">
+      <div class="eyebrow">💗 OUR MOMENTS</div>
+      <h1 class="hero-title" style="font-size:26px;">us, in a few frames</h1>
+      <p class="body-text" style="margin-top:4px;">a handful of moments I'd relive on loop ♡</p>
+
+      <div class="carousel">
+        <div class="arrows">
+          <button onclick="moveSlide(-1)">←</button>
+          <button onclick="moveSlide(1)">→</button>
         </div>
+        <div class="polaroid">
+          <div class="tape"></div>
+          <label class="frame upload-slot" id="slide-frame">
+            <input type="file" accept="image/*" onchange="handleSlideUpload(event)">
+            <span class="slot-content" id="slide-emoji">🌷</span>
+          </label>
+          <div class="count" id="slide-count">01 / 03</div>
+          <div class="cap" id="slide-caption">picked just for you, on an ordinary Tuesday.</div>
+        </div>
+      </div>
 
-        <div class="absolute top-1/4 left-8 text-3xl float-anim-slow opacity-60">🌸</div>
-        <div class="absolute top-1/3 right-10 text-2xl float-anim opacity-50" style="animation-delay: 1s;">✨</div>
-        <div class="absolute bottom-1/4 left-12 text-2xl float-anim-delay opacity-50">💜</div>
-        <div class="absolute top-20 right-20 text-xl float-anim-slow opacity-40" style="animation-delay: 0.5s;">🌷</div>
+      <div class="dots" id="slide-dots"></div>
+
+      <button class="btn" onclick="showScreen('bouquet-screen')">WHY I ADORE YOU →</button>
+    </div>
+  </section>
+
+  <!-- ================= SCREEN 3: BOUQUET / REASONS ================= -->
+  <section id="bouquet-screen" class="hidden fade-in">
+    <div class="card center">
+      <div class="eyebrow">💗 A LITTLE BOUQUET</div>
+      <h1 class="hero-title" style="font-size:26px;">a bloom for every reason I adore you</h1>
+      <p class="body-text" style="margin-top:4px;">picked just for you ♡</p>
+
+      <div class="grid">
+        <div class="cell"><span class="em">🌹</span><p>you feel like home</p></div>
+        <div class="cell"><span class="em">🌸</span><p>your laugh is my favourite sound</p></div>
+        <div class="cell"><span class="em">🌷</span><p>you make ordinary days magic</p></div>
+        <div class="cell"><span class="em">🪻</span><p>you're my calm and my spark</p></div>
+        <div class="cell"><span class="em">🌼</span><p>you make me want to be better</p></div>
+        <div class="cell"><span class="em">🌻</span><p>it's you. it's always you.</p></div>
+      </div>
+      <div class="scallop"></div>
     </div>
 
-    <div class="main-content" id="mainContent">
-        <section class="section" id="hero">
-            <div class="corner-flower top-4 left-4 float-anim">🌸</div>
-            <div class="corner-flower top-4 right-4 float-anim-delay">🌼</div>
+    <button class="btn pink" style="margin-top:26px;" onclick="showScreen('letter-screen')">READ MY LETTER →</button>
+  </section>
 
-            <div class="w-full max-w-md mx-auto text-center reveal visible">
-                <div class="inline-block bg-white/60 backdrop-blur-sm px-6 py-2 rounded-full border border-white/50 shadow-sm mb-8">
-                    <span class="text-pink-500 text-sm mr-2">♥</span>
-                    <span class="text-xs font-bold tracking-[0.2em] text-purple-400 uppercase">For My Favourite Person</span>
-                </div>
+  <!-- ================= SCREEN 4: LETTER ================= -->
+  <section id="letter-screen" class="hidden fade-in">
+    <div class="card center">
+      <div class="avatar" style="width:90px;height:90px;font-size:34px;">🐨</div>
+      <div class="eyebrow">♡ A LETTER, JUST FOR YOU ♡</div>
+      <div class="sub-script" style="font-size:28px;">My darling,</div>
+      <hr class="divider">
+      <p class="body-text" style="text-align:left;">I'm better with actions than with words, so I made you a little page instead — a song, our pictures, and a few things I mean with my whole heart.</p>
 
-                <div class="relative w-32 h-32 mx-auto mb-6">
-                    <div class="absolute inset-0 rounded-full bg-gradient-to-br from-purple-200 to-pink-200 animate-pulse"></div>
-                    <div class="absolute inset-1 rounded-full bg-white flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
-                        <img src="https://api.iconify.design/noto:hello-kitty.svg" class="w-24 h-24 object-cover" alt="Hello Kitty">
-                    </div>
-                </div>
+      <div class="letter-doodles">
+        <label class="upload-slot">
+          <input type="file" accept="image/*" onchange="handleUpload(event,'doodle0')">
+          <span class="slot-content" id="doodle0">a basket of your favourite flowers 🌷</span>
+        </label>
+        <label class="upload-slot">
+          <input type="file" accept="image/*" onchange="handleUpload(event,'doodle1')">
+          <span class="slot-content" id="doodle1">"I love you the mostest" 💌</span>
+        </label>
+        <label class="upload-slot">
+          <input type="file" accept="image/*" onchange="handleUpload(event,'doodle2')">
+          <span class="slot-content" id="doodle2">ILYSM 🐸</span>
+        </label>
+      </div>
 
-                <h1 class="font-serif text-4xl md:text-5xl text-gray-700 mb-2">Happy Girlfriend's Day</h1>
-                <p class="font-script text-2xl text-purple-400 mb-6">for you, always <span class="inline-block animate-pulse">♡</span></p>
+      <p class="body-text" style="text-align:left;">Thank you for being the calm in my chaos and the spark in my ordinary. For the late-night talks, the terrible puns, and the way you always know when I need a hug before I do.</p>
+      <p class="body-text" style="text-align:left;">I hope today feels soft and warm and completely yours. I hope you feel even a fraction of how much you're adored. And I hope you always know — even on the days I forget to say it — I choose you, every single time.</p>
 
-                <div class="glass-card p-6 mb-8 text-center">
-                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">
-                        Today is all about you. I built this tiny corner of the internet to say what I don't say often enough — that you make ordinary days feel like the good kind of story. Stay a while, my love.
-                    </p>
-                </div>
-
-                <div class="music-player mb-8 max-w-sm mx-auto reveal">
-                    <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <img src="https://api.iconify.design/noto:two-hearts.svg" class="w-8 h-8" alt="cover">
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex justify-between items-center mb-1">
-                            <div>
-                                <div class="font-bold text-gray-700 text-sm">Our Song</div>
-                                <div class="text-[10px] text-purple-400 uppercase tracking-wider font-bold">A Track That's Just Us</div>
-                            </div>
-                            <button class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center text-white shadow-md hover:scale-105 transition-transform" onclick="toggleMusic(this)">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                            </button>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <div class="flex justify-between mt-1 text-[10px] text-gray-400 font-mono">
-                            <span id="timeDisplay">0:15</span>
-                            <span>—:—</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-3 max-w-sm mx-auto mb-8 reveal">
-                    <div class="aspect-square rounded-2xl bg-white/60 p-2 shadow-sm border border-white/50 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform">
-                        <img src="https://api.iconify.design/noto:cat-with-wry-smile.svg" class="w-full h-full object-contain" alt="us">
-                    </div>
-                    <div class="aspect-square rounded-2xl bg-white/60 p-2 shadow-sm border border-white/50 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform">
-                        <img src="https://api.iconify.design/noto:heart-with-arrow.svg" class="w-full h-full object-contain" alt="love">
-                    </div>
-                    <div class="aspect-square rounded-2xl bg-white/60 p-2 shadow-sm border border-white/50 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform">
-                        <img src="https://api.iconify.design/noto:bouquet.svg" class="w-full h-full object-contain" alt="flowers">
-                    </div>
-                </div>
-
-                <button class="btn-primary" onclick="scrollToSection('moments')">
-                    SEE OUR LITTLE ALBUM →
-                </button>
-            </div>
-        </section>
-
-        <section class="section bg-gradient-to-b from-purple-100/30 to-transparent" id="moments">
-            <div class="w-full max-w-md mx-auto text-center">
-                <div class="inline-block bg-white/60 backdrop-blur-sm px-6 py-2 rounded-full border border-white/50 shadow-sm mb-4">
-                    <span class="text-pink-500 text-sm mr-2">♥</span>
-                    <span class="text-xs font-bold tracking-[0.2em] text-purple-400 uppercase">Our Moments</span>
-                </div>
-                
-                <h2 class="font-serif text-3xl text-gray-700 mb-2 reveal">us, in a few frames</h2>
-                <p class="text-purple-400 text-sm mb-10 reveal">a handful of moments I'd relive on loop ♡</p>
-
-                <div class="polaroid-slider mx-auto mb-8 reveal">
-                    <div class="polaroid active" data-index="0">
-                        <div class="tape"></div>
-                        <div class="aspect-square bg-purple-50 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
-                            <img src="https://api.iconify.design/noto:cherry-blossom.svg" class="w-32 h-32 object-contain" alt="hello kitty">
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs text-purple-300 mb-2 font-mono">01 / 03</div>
-                            <p class="font-script text-xl text-purple-500">the day I realised you were my favourite hello.</p>
-                        </div>
-                    </div>
-
-                    <div class="polaroid" data-index="1">
-                        <div class="tape"></div>
-                        <div class="aspect-square bg-pink-50 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
-                            <img src="https://api.iconify.design/noto:people-holding-hands.svg" class="w-32 h-32 object-contain" alt="us">
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs text-purple-300 mb-2 font-mono">02 / 03</div>
-                            <p class="font-script text-xl text-purple-500">every quiet moment with you is my favourite kind.</p>
-                        </div>
-                    </div>
-
-                    <div class="polaroid" data-index="2">
-                        <div class="tape"></div>
-                        <div class="aspect-square bg-red-50 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
-                            <img src="https://api.iconify.design/noto:rose.svg" class="w-32 h-32 object-contain" alt="rose">
-                        </div>
-                        <div class="text-center">
-                            <div class="text-xs text-purple-300 mb-2 font-mono">03 / 03</div>
-                            <p class="font-script text-xl text-purple-500">I'd choose this — us, exactly like this — every time.</p>
-                        </div>
-                    </div>
-
-                    <button onclick="changeSlide(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-purple-400 hover:bg-purple-50 transition-colors z-20 border border-purple-100">←</button>
-                    <button onclick="changeSlide(1)" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-purple-400 hover:bg-purple-50 transition-colors z-20 border border-purple-100">→</button>
-                </div>
-
-                <div class="flex justify-center gap-3 mb-8 reveal">
-                    <button onclick="goToSlide(0)" class="thumb-btn w-12 h-12 rounded-xl bg-white shadow-sm border-2 border-purple-300 overflow-hidden p-1 transition-all" data-thumb="0">
-                        <img src="https://api.iconify.design/noto:cherry-blossom.svg" class="w-full h-full object-contain">
-                    </button>
-                    <button onclick="goToSlide(1)" class="thumb-btn w-12 h-12 rounded-xl bg-white shadow-sm border-2 border-transparent overflow-hidden p-1 opacity-60 transition-all" data-thumb="1">
-                        <img src="https://api.iconify.design/noto:people-holding-hands.svg" class="w-full h-full object-contain">
-                    </button>
-                    <button onclick="goToSlide(2)" class="thumb-btn w-12 h-12 rounded-xl bg-white shadow-sm border-2 border-transparent overflow-hidden p-1 opacity-60 transition-all" data-thumb="2">
-                        <img src="https://api.iconify.design/noto:rose.svg" class="w-full h-full object-contain">
-                    </button>
-                </div>
-
-                <button class="btn-primary" onclick="scrollToSection('bouquet')">
-                    WHY I ADORE YOU →
-                </button>
-            </div>
-        </section>
-
-        <section class="section scalloped-bottom" id="bouquet">
-            <div class="w-full max-w-md mx-auto text-center">
-                <div class="inline-block bg-white/60 backdrop-blur-sm px-6 py-2 rounded-full border border-white/50 shadow-sm mb-4">
-                    <span class="text-pink-500 text-sm mr-2">♥</span>
-                    <span class="text-xs font-bold tracking-[0.2em] text-purple-400 uppercase">A Little Bouquet</span>
-                </div>
-
-                <h2 class="font-serif text-3xl text-gray-700 mb-2 reveal">a bloom for every reason I adore you</h2>
-                <p class="font-script text-xl text-purple-400 mb-8 reveal">picked just for you ♡</p>
-
-                <div class="grid grid-cols-2 gap-4 reveal">
-                    <div class="bouquet-card">
-                        <div class="text-4xl mb-3 float-anim">🏵️</div>
-                        <p class="text-sm font-medium text-gray-600">you feel like home</p>
-                    </div>
-                    <div class="bouquet-card">
-                        <div class="text-4xl mb-3 float-anim-delay">🌸</div>
-                        <p class="text-sm font-medium text-gray-600">your laugh is my favourite sound</p>
-                    </div>
-                    <div class="bouquet-card">
-                        <div class="text-4xl mb-3 float-anim-slow">🌷</div>
-                        <p class="text-sm font-medium text-gray-600">you make ordinary days magic</p>
-                    </div>
-                    <div class="bouquet-card">
-                        <div class="text-4xl mb-3 float-anim" style="animation-delay: 1.5s;">🪻</div>
-                        <p class="text-sm font-medium text-gray-600">you're my calm and my spark</p>
-                    </div>
-                    <div class="bouquet-card">
-                        <div class="text-4xl mb-3 float-anim-delay" style="animation-delay: 0.8s;">🌺</div>
-                        <p class="text-sm font-medium text-gray-600">you make me want to be better</p>
-                    </div>
-                    <div class="bouquet-card">
-                        <div class="text-4xl mb-3 float-anim-slow" style="animation-delay: 1.2s;">🌼</div>
-                        <p class="text-sm font-medium text-gray-600">it's you. it's always you.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section bg-gradient-to-b from-purple-100/50 to-pink-100/30" id="letter">
-            <div class="w-full max-w-md mx-auto">
-                <div class="glass-card p-8 relative reveal">
-                    <div class="corner-flower -top-6 -left-6 float-anim">🌸</div>
-                    <div class="corner-flower -top-6 -right-6 float-anim-delay">🌼</div>
-
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 mx-auto rounded-full bg-purple-100 flex items-center justify-center mb-4 border-4 border-white shadow-md">
-                            <img src="https://api.iconify.design/noto:blowing-kiss.svg" class="w-10 h-10" alt="kiss">
-                        </div>
-                        <div class="text-xs tracking-[0.15em] text-purple-400 uppercase mb-2">♡ A Letter, Just For You ♡</div>
-                        <h2 class="font-script text-4xl text-purple-500">My darling,</h2>
-                    </div>
-
-                    <hr class="letter-divider">
-
-                    <div class="space-y-4 text-gray-600 text-sm leading-relaxed mb-6">
-                        <p>I'm better with actions than with words, so I made you a little page instead — a song, our pictures, and a few things I mean with my whole heart.</p>
-                        
-                        <div class="flex justify-center gap-3 my-6">
-                            <img src="https://api.iconify.design/noto:basket.svg" class="sticker-img w-16 h-16 bg-white p-1" alt="basket">
-                            <img src="https://api.iconify.design/noto:tulip.svg" class="sticker-img w-16 h-16 bg-white p-1" alt="bouquet">
-                            <img src="https://api.iconify.design/noto:frog-face.svg" class="sticker-img w-16 h-16 bg-white p-1" alt="frog">
-                        </div>
-
-                        <p>thank you for being the calm in my chaos and the spark in my ordinary. for the late-night talks, the terrible puns, and the way you always know when I need a hug before I do.</p>
-
-                        <p>I hope today feels soft and warm and completely yours. I hope you feel even a fraction of how much you're adored. and I hope you always know — even on the days I forget to say it — I choose you, every single time.</p>
-                    </div>
-
-                    <hr class="letter-divider">
-
-                    <div class="text-center">
-                        <p class="font-script text-2xl text-purple-500 mb-1">yours, completely,</p>
-                        <p class="text-sm font-bold tracking-[0.2em] text-purple-400 uppercase">— Your Person</p>
-                    </div>
-                </div>
-
-                <div class="text-center mt-8 text-purple-300 text-xs tracking-[0.2em] uppercase reveal">
-                    With All My Love · Me
-                </div>
-            </div>
-        </section>
-
+      <hr class="divider">
+      <div class="sign-off">yours, completely,</div>
+      <div class="sign-name">— YOUR PERSON</div>
     </div>
 
-    <script>
-        function openMessage() {
-            const screen = document.getElementById('envelopeScreen');
-            const main = document.getElementById('mainContent');
-            const button = document.getElementById('messageButton');
+    <footer class="credit">WITH ALL MY LOVE · ME</footer>
+  </section>
 
-            button.classList.add('message-open');
-
-            setTimeout(() => {
-                screen.classList.add('hidden');
-                setTimeout(() => {
-                    screen.style.display = 'none';
-                    main.style.display = 'block';
-                    void main.offsetWidth;
-                    main.classList.add('visible');
-                    initScrollReveal();
-                }, 600);
-            }, 1200);
-        }
-
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.polaroid');
-        const thumbs = document.querySelectorAll('.thumb-btn');
-
-        function updateSlides() {
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active', 'prev');
-                if (i === currentSlide) {
-                    slide.classList.add('active');
-                } else if (i === (currentSlide - 1 + slides.length) % slides.length) {
-                    slide.classList.add('prev');
-                }
-            });
-
-            thumbs.forEach((thumb, i) => {
-                if (i === currentSlide) {
-                    thumb.classList.remove('opacity-60', 'border-transparent');
-                    thumb.classList.add('border-purple-300');
-                } else {
-                    thumb.classList.add('opacity-60', 'border-transparent');
-                    thumb.classList.remove('border-purple-300');
-                }
-            });
-        }
-
-        function changeSlide(dir) {
-            currentSlide = (currentSlide + dir + slides.length) % slides.length;
-            updateSlides();
-        }
-
-        function goToSlide(index) {
-            currentSlide = index;
-            updateSlides();
-        }
-
-        setInterval(() => {
-            if (document.getElementById('mainContent').classList.contains('visible')) {
-                changeSlide(1);
-            }
-        }, 5000);
-
-        let isPlaying = false;
-
-        function toggleMusic(btn) {
-            isPlaying = !isPlaying;
-            const fill = document.getElementById('progressFill');
-            if (isPlaying) {
-                btn.innerHTML = '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-                fill.style.animationPlayState = 'running';
-            } else {
-                btn.innerHTML = '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
-                fill.style.animationPlayState = 'paused';
-            }
-        }
-
-        document.getElementById('progressFill').style.animationPlayState = 'paused';
-
-        function initScrollReveal() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        }
-
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.innerHTML = ['✨', '💜', '🌸', '🌷', '♡'][Math.floor(Math.random() * 5)];
-            particle.style.position = 'fixed';
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.top = '-20px';
-            particle.style.fontSize = (Math.random() * 16 + 12) + 'px';
-            particle.style.opacity = '0.4';
-            particle.style.pointerEvents = 'none';
-            particle.style.zIndex = '100';
-            particle.style.animation = `float-slow ${Math.random() * 3 + 4}s linear forwards`;
-            document.body.appendChild(particle);
-            
-            setTimeout(() => {
-                particle.style.transition = 'top 6s linear, opacity 2s';
-                particle.style.top = '110vh';
-                particle.style.opacity = '0';
-            }, 100);
-            
-            setTimeout(() => particle.remove(), 7000);
-        }
-
-        setInterval(createParticle, 3000);
-    </script>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
